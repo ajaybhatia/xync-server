@@ -12,12 +12,11 @@ pub use auth::{login, me, register};
 
 pub use bookmark::__path_create_bookmark;
 pub use bookmark::__path_delete_bookmark;
-pub use bookmark::__path_fetch_preview;
 pub use bookmark::__path_get_bookmark;
 pub use bookmark::__path_list_bookmarks;
 pub use bookmark::__path_update_bookmark;
 pub use bookmark::{
-    create_bookmark, delete_bookmark, fetch_preview, get_bookmark, list_bookmarks, update_bookmark,
+    create_bookmark, delete_bookmark, get_bookmark, list_bookmarks, update_bookmark,
 };
 
 pub use category::__path_create_category;

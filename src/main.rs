@@ -21,7 +21,6 @@ use xync_server::{AppState, Config, Database};
         handlers::get_bookmark,
         handlers::update_bookmark,
         handlers::delete_bookmark,
-        handlers::fetch_preview,
         handlers::create_note,
         handlers::list_notes,
         handlers::get_note,
@@ -43,11 +42,10 @@ use xync_server::{AppState, Config, Database};
     components(
         schemas(
             CreateUser, LoginUser, UserResponse,
-            Bookmark, CreateBookmark, UpdateBookmark, BookmarkPreview,
+            Bookmark, CreateBookmark, UpdateBookmark,
             Note, CreateNote, UpdateNote,
             Tag, CreateTag, UpdateTag,
             Category, CreateCategory, UpdateCategory,
-            handlers::bookmark::PreviewRequest,
             handlers::auth::AuthResponse,
             handlers::health::HealthResponse,
             handlers::health::ReadinessResponse,
@@ -134,7 +132,6 @@ async fn main() {
                 .put(handlers::update_bookmark)
                 .delete(handlers::delete_bookmark),
         )
-        .route("/bookmarks/preview", post(handlers::fetch_preview))
         .route(
             "/notes",
             post(handlers::create_note).get(handlers::list_notes),

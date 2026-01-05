@@ -13,9 +13,6 @@ pub struct Bookmark {
     pub title: String,
     pub description: Option<String>,
     pub category_id: Option<Uuid>,
-    pub preview_image: Option<String>,
-    pub preview_description: Option<String>,
-    pub favicon: Option<String>,
     pub created_at: DateTime<Utc>,
     pub updated_at: DateTime<Utc>,
 }
@@ -39,12 +36,4 @@ pub struct UpdateBookmark {
     pub description: Option<String>,
     pub category_id: Option<Uuid>,
     pub tag_ids: Option<Vec<Uuid>>,
-}
-
-#[derive(Debug, Clone, Serialize, Deserialize, ToSchema)]
-pub struct BookmarkPreview {
-    pub title: Option<String>,
-    pub description: Option<String>,
-    pub image: Option<String>,
-    pub favicon: Option<String>,
 }

@@ -1,8 +1,8 @@
 #[cfg(test)]
 mod tests {
     use crate::models::{
-        BookmarkPreview, CreateBookmark, CreateCategory, CreateNote, CreateTag, CreateUser,
-        LoginUser, UpdateBookmark, UpdateCategory, UpdateNote, UpdateTag,
+        CreateBookmark, CreateCategory, CreateNote, CreateTag, CreateUser, LoginUser,
+        UpdateBookmark, UpdateCategory, UpdateNote, UpdateTag,
     };
     use uuid::Uuid;
     use validator::Validate;
@@ -155,20 +155,6 @@ mod tests {
             parent_id: None,
         };
         assert!(category.validate().is_err());
-    }
-
-    #[test]
-    fn test_bookmark_preview_default_values() {
-        let preview = BookmarkPreview {
-            title: None,
-            description: None,
-            image: None,
-            favicon: None,
-        };
-        assert!(preview.title.is_none());
-        assert!(preview.description.is_none());
-        assert!(preview.image.is_none());
-        assert!(preview.favicon.is_none());
     }
 
     #[test]

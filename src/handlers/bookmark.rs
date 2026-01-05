@@ -10,8 +10,8 @@ use validator::Validate;
 
 use crate::auth::AuthUser;
 use crate::error::{AppError, Result};
-use crate::models::{Bookmark, BookmarkPreview, CreateBookmark, UpdateBookmark};
-use crate::services::{BookmarkService, PreviewService};
+use crate::models::{Bookmark, CreateBookmark, UpdateBookmark};
+use crate::services::BookmarkService;
 
 #[derive(serde::Serialize, ToSchema)]
 pub struct BookmarkWithTags {
@@ -43,24 +43,6 @@ pub async fn create_bookmark(
         .map_err(|e| AppError::Validation(e.to_string()))?;
 
     let bookmark = BookmarkService::create(&pool, auth.user_id, input).await?;
-
-    tokio::spawn({
-        let pool = pool.clone();
-        let url = bookmark.url.clone();
-        let bookmark_id = bookmark.id;
-        async move {
-            if let Ok(preview) = PreviewService::fetch_preview(&url).await {
-                let _ = BookmarkService::update_preview(
-                    &pool,
-                    bookmark_id,
-                    preview.image,
-                    preview.description,
-                    preview.favicon,
-                )
-                .await;
-            }
-        }
-    });
 
     Ok((StatusCode::CREATED, Json(bookmark)))
 }
@@ -156,29 +138,4 @@ pub async fn delete_bookmark(
 ) -> Result<StatusCode> {
     BookmarkService::delete(&pool, auth.user_id, id).await?;
     Ok(StatusCode::NO_CONTENT)
-}
-
-#[utoipa::path(
-    post,
-    path = "/api/bookmarks/preview",
-    request_body = PreviewRequest,
-    responses(
-        (status = 200, description = "Preview fetched", body = BookmarkPreview),
-        (status = 401, description = "Unauthorized")
-    ),
-    security(("bearer_auth" = [])),
-    tag = "bookmarks"
-)]
-#[tracing::instrument(skip(_auth, input))]
-pub async fn fetch_preview(
-    _auth: AuthUser,
-    Json(input): Json<PreviewRequest>,
-) -> Result<Json<BookmarkPreview>> {
-    let preview = PreviewService::fetch_preview(&input.url).await?;
-    Ok(Json(preview))
-}
-
-#[derive(serde::Deserialize, ToSchema)]
-pub struct PreviewRequest {
-    pub url: String,
 }

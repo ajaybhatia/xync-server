@@ -119,31 +119,4 @@ impl BookmarkService {
 
         Ok(())
     }
-
-    pub async fn update_preview(
-        pool: &PgPool,
-        bookmark_id: Uuid,
-        preview_image: Option<String>,
-        preview_description: Option<String>,
-        favicon: Option<String>,
-    ) -> Result<()> {
-        sqlx::query(
-            r#"
-            UPDATE bookmarks
-            SET preview_image = $2,
-                preview_description = $3,
-                favicon = $4,
-                updated_at = NOW()
-            WHERE id = $1
-            "#,
-        )
-        .bind(bookmark_id)
-        .bind(preview_image)
-        .bind(preview_description)
-        .bind(favicon)
-        .execute(pool)
-        .await?;
-
-        Ok(())
-    }
 }

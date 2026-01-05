@@ -7,7 +7,7 @@ mod user;
 #[cfg(test)]
 mod tests;
 
-pub use bookmark::{Bookmark, BookmarkPreview, CreateBookmark, UpdateBookmark};
+pub use bookmark::{Bookmark, CreateBookmark, UpdateBookmark};
 pub use category::{Category, CreateCategory, UpdateCategory};
 pub use note::{CreateNote, Note, UpdateNote};
 pub use tag::{CreateTag, Tag, UpdateTag};
