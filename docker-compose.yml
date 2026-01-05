@@ -1,0 +1,20 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: xync-postgres
+    environment:
+      POSTGRES_USER: xync
+      POSTGRES_PASSWORD: xync_password
+      POSTGRES_DB: xync
+    ports:
+      - "5432:5432"
+    volumes:
+      - xync_postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U xync -d xync"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  xync_postgres_data:
